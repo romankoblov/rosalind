@@ -1,4 +1,4 @@
-import itertools
+from itertools import takewhile, imap, izip
 a = open('rosalind10.txt').read().replace("\n",'')
 b = """UUU F      CUU L      AUU I      GUU V
 UUC F      CUC L      AUC I      GUC V
@@ -16,7 +16,7 @@ UGU C      CGU R      AGU S      GGU G
 UGC C      CGC R      AGC S      GGC G
 UGA Stop   CGA R      AGA R      GGA G
 UGG W      CGG R      AGG R      GGG G 
-""".replace('   ','      ')
-c = dict(reduce(lambda x,y:x+y, [[tuple(j.strip().split(' ')) for j in i.split("      ") if j] for i in b.split("\n") if i]))
+"""
 
-print "".join(itertools.takewhile(lambda x: x!='Stop', [c.get(i) for i in [a[i:i+3] for i in xrange(0, len(a), 3)]]))
+c = dict((lambda s: izip(s[0::2], s[1::2]))(b.split()))
+print "".join(takewhile("Stop".__ne__, imap(c.get, imap("".join, izip(a[::3], a[1::3], a[2::3])))))
